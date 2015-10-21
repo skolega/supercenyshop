@@ -1,0 +1,45 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Moje zamówienia{% endblock %}
+
+{% block body %}
+    <h1>Moje zamówienia</h1>
+    
+    {% if orders|length > 0 %} 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Numer zamówienia</th>
+                    <th>Data zamówienia</th>
+                    <th>Wartość zamówienia</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.createdAt|date('d-m-Y') }}</td>                    
+                        <td>{{ order.totalPrice|number_format(2, ',', '') }}</td>
+                        <td>{{ order.getStatusType[order.status] }}</td>
+                        <td>
+                            <a href="{{ path('orders_show', {'id': order.id}) }}" class="btn btn-primary">Szczegóły zamówienia</a>
+                            {% if order.status == constant('AppBundle\\Entity\\Orders::STATUS_NEW') %}
+                                <a href="{{ path('orders_cancel', {'id': order.id}) }}" class="btn btn-danger">Anuluj zamówienie</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="row">
+            {{ knp_pagination_render(orders) }}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">Aktualnie nie posiadasz żadnych zamówień</div>
+    {% endif %}
+        
+{% endblock %}

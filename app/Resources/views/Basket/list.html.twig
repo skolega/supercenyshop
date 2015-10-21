@@ -1,0 +1,16 @@
+<div class="thumbnail">
+    {% if basket.products %}
+
+        {% for product in basket.products %}
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+                    <a href="{{ path('product_show', {'slug': product.slug}) }}">{{ product.name }}</a><br>
+                    {{ product.quantity }} x {{ product.price|number_format(2, ',', '') }} zł
+                </div>
+            </div>
+        {% endfor %}                
+
+    {% else %}
+        ... jest pusty
+    {% endif %}
+</div>

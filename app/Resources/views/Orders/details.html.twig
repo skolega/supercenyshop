@@ -1,0 +1,69 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Zamówienie{% endblock %}
+
+{% block body %}
+    <a href="{{ path('orders_list') }}" class="btn btn-warning">Powrót do listy zamówień</a>
+    
+    <h1>Szczegóły zamówienia</h1>
+    
+    <div class="row">
+        <div class="col-md-3">
+            <p>Data zamówienia</p>
+        </div>
+        <div class="col-md-9">
+            <p>{{ order.createdAt|date('m-d-Y') }}</p>
+        </div>
+        
+        <div class="col-md-3">
+            <p>Status zamówienia</p>
+        </div>
+        <div class="col-md-9">
+            <p>{{ order.getStatusType[order.status] }}</p>
+        </div>
+        
+        <div class="col-md-3">
+            <p>Wartość zamówienia</p>
+        </div>
+        <div class="col-md-9">
+            <p>{{ order.totalPrice|number_format(2, ',', '') }}</p>
+        </div>
+        <div class="col-md-3">
+            <p>Adres wysyłki</p>
+        </div>
+        <div class="col-md-9">
+            <p>
+                ul. {{ order.street }} {{ order.no}}<br>
+                {{ order.postal }} {{ order.city }}<br>
+                woj. {{ order.province }}
+            </p>
+        </div>
+    </div>
+    
+    <h4>Zamówione produkty</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Cena</th>
+                <th>Ilość</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for product in order.items %}
+                <tr>
+                    <td>{{ product.productName }}</td>                    
+                    <td>{{ product.price|number_format(2, ',', '') }}</td>
+                    <td>{{ product.quantity }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        
+    <h4>Uwagi do zamówienia</h4>
+    <p>
+        {{ order.comments }}
+    </p>
+            
+{% endblock %}

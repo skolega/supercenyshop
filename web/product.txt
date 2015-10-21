@@ -1,0 +1,15 @@
+1:Hdd 1TB Seagate:230.00:Opis dysku twardego 1TB
+2:Hdd 1,5TB Seagate:245.00:Opis dysku twardego 1,5TB
+3:Monitor LG LCD 24:760.00:Opis monitora 24 calowego
+4:Monitor Philips LCD 26:850.00:Opis monitora Philipsa
+5:Klawiatura multimedialna Logitech:58.00:Opis klawiatury
+6:Myszka Logitech USB:39.00:Opis myszki
+7:Drukarka HP LaserJet:390.00:Opis drukarki
+8:Skaner HP:210.00:Opis skanera
+9:Urządzenie wielofunkcyjne HP:450.00:Opis urządzenia wielofunkcyjnego
+10:Karta graficzna GeForce GTX250:390.00:Opis karty graficznej
+11:Karta muzyczna Sound Blaster:213.00:Opis karty muzycznej
+12:Procesor Intel i5:754.00:Opis procesora
+13:Płyta główna Gigabyte:340.00:Opis płyty głównej
+14:Pamięć 4GB Kingston:220.00:Opis pamięci
+15:Nagrywarka DVD:110.00:Opis napędu DVD

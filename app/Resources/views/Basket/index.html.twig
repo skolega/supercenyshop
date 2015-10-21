@@ -1,0 +1,58 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Koszyk{% endblock %}
+
+{% block body %}
+    <h1>Koszyk</h1>
+    
+    {% if basket.products %}        
+    
+        <form method="post" >
+            
+            <a href="{{ path('basket_clear') }}" class="btn btn-warning" title="Wyczyść koszyk">Wyczyść Koszyk</a>
+            <input type="submit" class="btn btn-info" value="Zaktualizuj stan">
+            <a href="{{ path('orders_create') }}" class="btn btn-primary pull-right" title="Realizuj zamówienie">Realizuj zamówienie</a>
+            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>nazwa</th>
+                        <th>cena</th>
+                        <th>ilość</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in basket.products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price|number_format(2, ',', '') }}</td>
+                            <td class="col-xs-1">
+                                <input type="text" class="form-control" name="quantity[{{ product.id }}]" value="{{ product.quantity }}" /></td>
+                            <td>
+                                <a href="{{ path('basket_remove', { 'id': product.id }) }}" class="btn btn-danger remove" data-bb="confirm">usuń</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>Podsumowanie</td>
+                        <td>{{ basket.price|number_format(2, ',', '') }}</td>
+                        <td>{{ basket.quantity }}</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+        </form>
+    
+    {% else %}        
+        <p>Koszyk jest pusty</p>
+    {% endif %}
+
+{% endblock %}

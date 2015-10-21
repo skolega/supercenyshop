@@ -1,0 +1,25 @@
+<div class="col-sm-6 col-md-3">
+    <div class="thumbnail clearfix">
+        {% if product.imageName %}
+            <img src="{{ vich_uploader_asset(product, 'product_image') | imagine_filter('product_image_thumb') }}" alt="" class="img-thumbnail">
+        {% else %}
+            <img src="http://placehold.it/240x200" alt="" class="img-thumbnail">
+        {% endif %}
+        
+        <div class="caption">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description | truncate(50, true, ' (...)') }}</p>
+            <p>Dostępnych: {{ product.amount }}</p>
+
+            <div class="pull-left">
+                <p>
+                    <a href="{{ path('basket_add', {'id': product.id}) }}" class="btn btn-primary" role="button">Dodaj</a> 
+                    <a href="{{ path('product_show', {'slug': product.slug}) }}" class="btn btn-default" role="button">Pokaż</a>
+                </p>
+            </div>
+            <div class="pull-right">
+                <h4 class="text-danger">{{ product.price }}</h4>
+            </div>
+        </div>
+    </div>
+</div>

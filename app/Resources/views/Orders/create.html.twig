@@ -1,0 +1,53 @@
+{% extends "::base.html.twig" %}
+
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block title %}Realizuj zamówienie{% endblock %}
+
+{% block body %}
+    <h1>Zamówienie</h1>
+    
+    <h4>Zamawiane produkty</h4>
+    <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>nazwa</th>
+                        <th>cena</th>
+                        <th>ilość</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in basket.products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.price|number_format(2, ',', '') }}</td>
+                            <td class="col-xs-1">
+                                {{ product.quantity }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Podsumowanie</td>
+                        <td>{{ basket.price|number_format(2, ',', '') }}</td>
+                        <td>{{ basket.quantity }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+    
+    {{ form_start(form, { 'attr': {'novalidate': 'novalidate' } }) }}
+        
+    <h4>Adres dostawy</h4>
+        {{ form_row(form.street) }}
+        {{ form_row(form.no) }}
+        {{ form_row(form.postal) }}
+        {{ form_row(form.city) }}
+        {{ form_row(form.province) }}
+        <h4>Uwagi do zamówienia</h4>
+        {{ form_row(form.comments) }}
+        
+        <button type="submit" class="btn btn-primary">Realizuj zamówienie</button>
+    {{ form_end(form) }}
+{% endblock %}

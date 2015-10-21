@@ -1,0 +1,51 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Moje komentarze{% endblock %}
+
+{% block body %}
+    <h1>{{ block('title') }}</h1>
+    
+    {% if comments|length > 0 %} 
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Produkt</th>
+                    <th>Data komentarza</th>
+                    <th>Głosów pozytywnych</th>
+                    <th>Głosów negatywnych</th>
+                    <th>Zweryfikowany</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for comment in comments %}
+                    <tr>
+                        <td><a href="{{ path('product_show', {'id': comment.product.id}) }}">{{ comment.product.name }}</a></td>
+                        <td>{{ comment.createdAt|date('d-m-Y') }}</td>                    
+                        <td>{{ comment.nbVoteUp }}</td>
+                        <td>{{ comment.nbVoteDown }}</td>
+                        <td>
+                            {% if comment.verified %}
+                                TAK
+                            {% else %}
+                                NIE
+                            {% endif %}
+                        </td>
+                        <td>{% if not comment.verified %}
+                                <a href="{{ path('comment_remove', {'id': comment.id}) }}" class="btn btn-danger" title="Usuń komentarz">Usuń</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="row">
+            {{ knp_pagination_render(comments) }}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">Aktualnie nie wystawiłeś żadnych komentarzy</div>
+    {% endif %}
+        
+{% endblock %}

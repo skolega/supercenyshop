@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Strona główna{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css">
+
+            {% stylesheets '../app/Resources/public/css/style.css' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+
+        <div class="container-fluid">
+
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{ path('homepage') }}">Shop</a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{ path('products_list') }}">Produkty</a></li>
+                            <li><a href="{{ path('basket') }}">Koszyk</a></li>
+                            <li><a href="{{ path('set_locale', {'locale': 'en'}) }}">EN</a></li> 
+                            <li><a href="{{ path('set_locale', {'locale': 'pl'}) }}">PL</a></li> 
+                        </ul>
+                        <form class="navbar-form navbar-left" role="search" action="{{ path('product_search') }}" method="GET">
+                            <div class="form-group">
+                                <input type="text" name="query" class="form-control" placeholder="Wpisz szukaną frazę">
+                            </div>
+                            <button type="submit" class="btn btn-default">Szukaj</button>
+                        </form>
+                        <ul class="nav navbar-nav navbar-right">
+
+                            {% if app.user %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Witaj {{ app.user.username }}<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li><a href="{{ path('admin') }}">Panel admina</a></li>
+                                            <li class="divider"></li>
+                                            {% endif %}
+                                        <li><a href="{{ path('fos_user_profile_edit') }}">Profil</a></li>
+                                        <li><a href="{{ path('orders_list') }}">Moje zamówienia</a></li>
+                                        <li><a href="{{ path('comments_list') }}">Moje komentarze</a></li>
+                                        <li class="divider"></li>
+                                        <li><a href="{{ path('fos_user_security_logout') }}">Wyloguj</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Witaj Nieznajomy<span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{{ path('fos_user_security_login') }}">zaloguj się</a></li>
+                                        <li><a href="{{ path('fos_user_registration_register') }}">zarejestruj się</a></li>
+                                    </ul>
+                                </li>   
+                            {% endif %}
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
+
+            <div class="row">
+                {% block sidebar %}
+                    <div class="col-md-2">
+                        <h5>Kategorie</h5>
+                        {{ render(controller('AppBundle:Category:list')) }}
+                        <h5>Koszyk</h5>
+                        {{ render(controller('AppBundle:Basket:list')) }}
+                    </div>
+                {% endblock %}
+                <div class="col-md-10">
+
+                    {% for key, messages in app.session.getFlashBag() %}
+                        {% if key in ['success', 'warning', 'danger', 'info'] %}
+                            {% for msg in messages %}
+                                <div class="alert alert-{{ key }} alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    {{ msg }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+
+                {% block body %}{% endblock %}
+
+            </div>
+        </div>    
+
+        <div class="row">
+            {% block footer %}
+
+            {% endblock %}
+        </div>
+
+    </div>
+
+    {% block javascripts %}
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>  
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+        {% javascripts '../app/Resources/public/js/*' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+    {% endblock %}
+</body>
+</html>

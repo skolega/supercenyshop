@@ -1,0 +1,21 @@
+services:
+    twig.extension.text:
+         class: Twig_Extensions_Extension_Text
+         tags:
+             - { name: twig.extension }
+             
+    basket:
+        class: AppBundle\Service\Basket
+        arguments:
+            session: "@session"
+            
+    app.user.provider:
+        class: AppBundle\Service\FOSUserProvider
+        arguments: [@fos_user.user_manager, {facebook: facebookId}]
+        
+    locale_listener:
+        class: AppBundle\EventListener\LocaleListener
+        arguments: ["%kernel.default_locale%"]
+        tags:
+            - { name: kernel.event_subscriber }
+            
