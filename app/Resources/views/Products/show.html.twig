@@ -55,56 +55,10 @@
                     <p>Czerwony</p>
                 </div>
             </div>
-            </br></br>
-            <div class="row">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Opis</a></li>
-                    <li role="presentation"><a href="#specification" aria-controls="specyfication" role="tab" data-toggle="tab">Specyfikacja</a></li>
-                    <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Komentarze</a></li>
-                </ul>
-
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="description">
-                        <p>{{ product.description }}</p>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="specyfication">
-                        <p>{{ product.description }}</p>
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane" id="comments">
-                        <h4>Komentarze</h4>
-                        {% if not app.user %}
-                            <p>Aby móc dodawać komentarz musisz się wcześniej <a href="{{ path('fos_user_security_login') }}" title="Formularz logowania">zalogować</a>.</p>
-                        {% else %}
-                            <form method="post" novalidate>
-                                <div class="form-group">
-                                    {{ form_row(form.content) }}
-                                </div>
-                                {{ form_rest(form) }}
-                                <input class="btn btn-success" type="submit" value="Dodaj komentarz" />
-                            </form>
-                        {% endif %}
-                        <br />
-                        {% for comment in product.comments if comment.verified %}
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="pull-right">
-                                        <span class="text-success">{{ comment.nbVoteUp }}</span> <a href="{{ path('comment_vote_up', {'id': comment.id, 'productId': product.id}) }}" title="Up" class="vote-up"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a> | 
-                                        <span class="text-danger">{{ comment.nbVoteDown }}</span> <a href="{{ path('comment_vote_down', {'id': comment.id, 'productId': product.id}) }}" title="Down" class="vote-down"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></a>
-                                    </div>
-                                    <p>{{ comment.content }}</p>
-                                    <small>Dodany {{ comment.createdAt|date('d-m-Y') }} przez {{ comment.user }}</small>
-                                </div>
-                            </div>
-                        {% else %}
-                            <p>Nie ma jeszcze żadnych komentarzy. Dodaj swój jako pierwszy!</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>  
+            </br></br>  
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-4">
             <table class="table">
                 <thead>
                 </thead>
@@ -116,32 +70,54 @@
                 </tr>
                 <tr>
                 <div class="row">
-                    <div class="col-md-2">
-                        Dostępnych
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h4>Cena</h4>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h4 class="text-danger price" data-price="{{ product.price }}">{{ product.price }}</h4>
+                                </div>
+                                <div class="col-md-8">
+                                    <h4 class="product-price-units">zł / m2</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-10">
-                        {% if product.amount == 0 %}
-                            Dostępność towaru uzależniona od stanów magazynowych producenta
-                        {% else %}
-                            {{ product.amount }}
-                        {% endif %}
-                    </div>
-                    <div class="col-md-2">
-                        Cena
-                    </div>
-                    <div class="col-md-10">
-                        <h4 class="text-danger">{{ product.price }}</h4>
+                    <div class="row">
+                        <div class="col-md-2">
+                            Dostępność
+                        </div>
+                        <div class="col-md-10">
+                            {% if product.amount == 0 %}
+                                Dostępność towaru uzależniona od stanów magazynowych producenta
+                            {% else %}
+                                {{ product.amount }}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 </tr>
                 <tr>
                 <div class="row">
                     <div class="row">
-                        <div class="col-md-4">
-                            <h5>Podaj wymaganą ilość   <input name="expected_quantity" class="form-control"></input></h5>
+                        <div class="col-md-11">
+                            <h5>Podaj wymaganą ilość   
+                                <input type="number" name="expected_quantity" class="form-control expected_quantity"></input>
+                            </h5>
                             <p style="font-size: 1rem">Asortyment zostanie przeliczony na pełne opakowania - palety</p>
-                            <h5>Ilość zamawianego produktu <input type="number" min="11.8" max="" step="11.8" value="11.8" name="quantity" class="form-control"></input></h5>
-                            <p style="font-size: 1rem">Uwaga towar zostanie dostarczony na paletach z kaucją doliczaną do ceny towaru i wynosi <span class="value">30</span><span class="descriptio"> zł/netto</span></p>
+                            <h5>Ilość zamawianego produktu 
+                                <input type="number" min="{{ product.package }}" max="" 
+                                       step="{{ product.package }}" value="{{ product.package }}" 
+                                       name="quantity" class="form-control quantity-step">
+                                </input>
+                            </h5>
+                            <p style="font-size: 1rem">Uwaga towar zostanie dostarczony na paletach z kaucją doliczaną do ceny towaru i wynosi 
+                                <span class="value">30</span><span class="descriptio">
+                                    zł/netto
+                                </span>
+                            </p>
                         </div>
                     </div>
                     </tr>
@@ -199,10 +175,86 @@
                     </tr>
                     </tbody>
             </table>
-            <h3>SUMA :  <span class=price_value">12450</span><span class="value">zł (netto)</span></h3>
-            <p>Stawka VAT - <span class="vat_type">23%</span>:  <span class=price_value">3212,23</span><span class="value">zł</span></p>
-            <a href="{{ path('basket_add', {'id': product.id}) }}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj do koszyka</a>
+
+            <h3>  
+                <div class="row">
+                    <div class="col-md-12 total_sum">
+                        <div class="col-md-5">
+                            SUMA
+                        </div>
+                        <div  class="price_value col-md-4">
+                              <span></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="value">zł bez VAT</span>
+                        </div>
+                    </div>
+                </div>
+            </h3>
+            <div class="row">
+                <div class="col-md-12 total_vat">
+                    <div class="row">
+                        <div class="value col-md-6"></div>
+                        <p class="col-md-2">Stawka VAT - </p>
+                        <div class="vat_type col-md-1" data-vat="23">23%</div>
+                        <div id="vatvalue" class="col-md-2">--</div>
+                        <div class="value col-md-1">zł</div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="col-md-4">
+            <div class="row">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Opis</a></li>
+                    <li role="presentation"><a href="#specification" aria-controls="specyfication" role="tab" data-toggle="tab">Specyfikacja</a></li>
+                    <li role="presentation"><a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Komentarze</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="description">
+                        <p>{{ product.description }}</p>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="specyfication">
+                        <p>{{ product.description }}</p>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="comments">
+                        <h4>Komentarze</h4>
+                        {% if not app.user %}
+                            <p>Aby móc dodawać komentarz musisz się wcześniej <a href="{{ path('fos_user_security_login') }}" title="Formularz logowania">zalogować</a>.</p>
+                        {% else %}
+                            <form method="post" novalidate>
+                                <div class="form-group">
+                                    {{ form_row(form.content) }}
+                                </div>
+                                {{ form_rest(form) }}
+                                <input class="btn btn-success" type="submit" value="Dodaj komentarz" />
+                            </form>
+                        {% endif %}
+                        <br />
+                        {% for comment in product.comments if comment.verified %}
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="pull-right">
+                                        <span class="text-success">{{ comment.nbVoteUp }}</span> <a href="{{ path('comment_vote_up', {'id': comment.id, 'productId': product.id}) }}" title="Up" class="vote-up"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a> | 
+                                        <span class="text-danger">{{ comment.nbVoteDown }}</span> <a href="{{ path('comment_vote_down', {'id': comment.id, 'productId': product.id}) }}" title="Down" class="vote-down"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></a>
+                                    </div>
+                                    <p>{{ comment.content }}</p>
+                                    <small>Dodany {{ comment.createdAt|date('d-m-Y') }} przez {{ comment.user }}</small>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p>Nie ma jeszcze żadnych komentarzy. Dodaj swój jako pierwszy!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="{{ path('basket_add', {'id': product.id}) }}" class="btn btn-primary" role="button">
+            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj do koszyka</a>
     </div>
+
+</div>
 </div>
 {% endblock %}

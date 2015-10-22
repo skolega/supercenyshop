@@ -24,6 +24,7 @@ class LoadProductsData extends AbstractFixture implements OrderedFixtureInterfac
             $product->setDescription($faker->text());
             $product->setPrice($faker->numberBetween(50, 999));
             $product->setAmount($faker->numberBetween(0, 20));
+            $product->setPackage($faker->numberBetween(1, 15));
             $product->setCategory($this->getReference('category' . $faker->numberBetween(1, 11)));
 
             $manager->persist($product);

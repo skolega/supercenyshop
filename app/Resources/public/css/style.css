@@ -5,3 +5,7 @@
 .color_gallery div{
     display:inline-block;
 }
+
+#vatvalue{
+    float:rigt;
+}
