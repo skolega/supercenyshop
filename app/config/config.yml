@@ -110,6 +110,12 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
+        manufacture_image:
+            uri_prefix:         images/manufactures
+            upload_destination: %kernel.root_dir%/../web/images/manufactures
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
     
 easy_admin:
     site_name: 'SuperHiperSklep'
@@ -167,6 +173,14 @@ liip_imagine:
             filters:
                 thumbnail: { size: [240, 200], mode: outbound }
         product_image:
+            quality: 75
+            filters:
+                thumbnail: { size: [400, 300], mode: outbound }
+        manufacture_image_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [240, 200], mode: outbound }
+        manufacture_image:
             quality: 75
             filters:
                 thumbnail: { size: [400, 300], mode: outbound }

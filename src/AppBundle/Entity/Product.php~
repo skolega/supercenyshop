@@ -41,6 +41,64 @@ class Product {
      * @ORM\Column(length=255, unique=true)
      */
     private $slug;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="weight", type="integer")
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0)
+     */
+    private $weight;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="height", type="integer")
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0)
+     */
+    private $height;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="width", type="integer")
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0)
+     */
+    private $width;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="length", type="integer")
+     * 
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0)
+     */
+    private $length;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="text", nullable=true)
+     * 
+     * @Assert\NotBlank()
+     */
+    private $color;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="product_dimensions", type="text", nullable=true)
+     * 
+     * @Assert\NotBlank()
+     */
+    private $product_dimensions;
 
     /**
      * @var string
@@ -50,6 +108,15 @@ class Product {
      * @Assert\NotBlank()
      */
     private $description;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facture", type="text", nullable=true)
+     * 
+     * @Assert\NotBlank()
+     */
+    private $facture;
 
     /**
      * @var string
@@ -90,6 +157,8 @@ class Product {
      * @Assert\Range(min=0)
      */
     private $type = 0;
+    
+    
 
     /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
@@ -97,6 +166,13 @@ class Product {
      * @Assert\NotNull(message="Proszę wybrać odpowiednią kategorię")
      */
     private $category;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Manufacturer", mappedBy="product")
+     * 
+     * @Assert\NotNull(message="Proszę wybrać odpowiedniego producenta")
+     */
+    private $manufactures;
 
     /**
      * @var ArrayCollection
@@ -395,5 +471,235 @@ class Product {
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     * @return Product
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set manufactures
+     *
+     * @param \AppBundle\Entity\Manufacturer $manufactures
+     * @return Product
+     */
+    public function setManufactures(\AppBundle\Entity\Manufacturer $manufactures = null)
+    {
+        $this->manufactures = $manufactures;
+
+        return $this;
+    }
+
+    /**
+     * Get manufactures
+     *
+     * @return \AppBundle\Entity\Manufacturer 
+     */
+    public function getManufactures()
+    {
+        return $this->manufactures;
+    }
+
+    /**
+     * Add manufactures
+     *
+     * @param \AppBundle\Entity\Manufacturer $manufactures
+     * @return Product
+     */
+    public function addManufacture(\AppBundle\Entity\Manufacturer $manufactures)
+    {
+        $this->manufactures[] = $manufactures;
+
+        return $this;
+    }
+
+    /**
+     * Remove manufactures
+     *
+     * @param \AppBundle\Entity\Manufacturer $manufactures
+     */
+    public function removeManufacture(\AppBundle\Entity\Manufacturer $manufactures)
+    {
+        $this->manufactures->removeElement($manufactures);
+    }
+
+    /**
+     * Set weight
+     *
+     * @param integer $weight
+     * @return Product
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * Get weight
+     *
+     * @return integer 
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * Set height
+     *
+     * @param integer $height
+     * @return Product
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    /**
+     * Get height
+     *
+     * @return integer 
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * Set width
+     *
+     * @param integer $width
+     * @return Product
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
+     * Get width
+     *
+     * @return integer 
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * Set length
+     *
+     * @param integer $length
+     * @return Product
+     */
+    public function setLength($length)
+    {
+        $this->length = $length;
+
+        return $this;
+    }
+
+    /**
+     * Get length
+     *
+     * @return integer 
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     * @return Product
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set product_dimensions
+     *
+     * @param string $productDimensions
+     * @return Product
+     */
+    public function setProductDimensions($productDimensions)
+    {
+        $this->product_dimensions = $productDimensions;
+
+        return $this;
+    }
+
+    /**
+     * Get product_dimensions
+     *
+     * @return string 
+     */
+    public function getProductDimensions()
+    {
+        return $this->product_dimensions;
+    }
+
+    /**
+     * Set facture
+     *
+     * @param string $facture
+     * @return Product
+     */
+    public function setFacture($facture)
+    {
+        $this->facture = $facture;
+
+        return $this;
+    }
+
+    /**
+     * Get facture
+     *
+     * @return string 
+     */
+    public function getFacture()
+    {
+        return $this->facture;
     }
 }

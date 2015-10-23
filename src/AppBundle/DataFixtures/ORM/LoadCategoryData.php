@@ -17,17 +17,17 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $categoriesNames = [
-            'Akcesoria komputerowe',
-            'Elementy sieciowe',
-            'Komputery stacjonarne',
-            'Laptopy, netbooki i tablety',
-            'Materiały eksploatacyjne',
-            'Monitory',
-            'Oprogramowanie',
-            'Peryferia komputerowe',
-            'Podzespoły PC',
-            'Przechowywanie danych',
-            'Urządzenia biurowe' 
+            'Kostka brukowa',
+            'Obrzeże',
+            'Krawężnik',
+            'Palisada',
+            'Korytka ściekowe',
+            'Narzędzia',
+            'Kruszywa',
+            'Gazony',
+            'Galanteria Betonowa',
+            'Ogrodzenia',
+            'Odwodnienia' 
         ];
         
         $i = 1;

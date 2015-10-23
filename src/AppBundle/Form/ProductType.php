@@ -19,7 +19,18 @@ class ProductType extends AbstractType
             ->add('name', 'text', array('label' => "Nazwa produktu"))
             ->add('description')
             ->add('price', 'money', array('label' => "Cena", 'currency' => 'PLN'))
-            ->add('amount')            
+            ->add('amount')
+            ->add('imageFile', 'file', array('label' => "Zdęcie główne produktu"))
+            ->add('type')
+            ->add('package')
+            ->add('weight')
+            ->add('height') 
+            ->add('length')
+            ->add('width')
+            ->add('color')
+            ->add('facture')
+            ->add('product_dimensions')
+            ->add('manufactures')
         ;
     }
     

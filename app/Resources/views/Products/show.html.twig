@@ -183,7 +183,7 @@
                             SUMA
                         </div>
                         <div  class="price_value col-md-4">
-                              <span></span>
+                            <span></span>
                         </div>
                         <div class="col-md-3">
                             <span class="value">zł bez VAT</span>
@@ -253,6 +253,8 @@
         </div>
         <a href="{{ path('basket_add', {'id': product.id}) }}" class="btn btn-primary" role="button">
             <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj do koszyka</a>
+        <a href="{{ path('product_new') }}" class="btn btn-warning" role="button">
+            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj nowy produkt</a>
     </div>
 
 </div>
