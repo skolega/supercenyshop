@@ -104,14 +104,16 @@
                     <div class="row">
                         <div class="col-md-11">
                             <h5>Podaj wymaganą ilość   
-                                <input type="number" name="expected_quantity" class="form-control expected_quantity"></input>
+                                <input type="number" name="expected_quantity" value="1" class="form-control expected_quantity"></input>
                             </h5>
                             <p style="font-size: 1rem">Asortyment zostanie przeliczony na pełne opakowania - palety</p>
                             <h5>Ilość zamawianego produktu 
-                                <input type="number" min="{{ product.package }}" max="" 
-                                       step="{{ product.package }}" value="{{ product.package }}" 
-                                       name="quantity" class="form-control quantity-step">
-                                </input>
+                                <span class="quantity-input">
+                                    <input type="number" min="{{ product.package }}" max="" 
+                                           step="{{ product.package }}" value="{{ product.package }}" 
+                                           name="quantity" class="form-control quantity-step">
+                                    </input>
+                                </span>
                             </h5>
                             <p style="font-size: 1rem">Uwaga towar zostanie dostarczony na paletach z kaucją doliczaną do ceny towaru i wynosi 
                                 <span class="value">30</span><span class="descriptio">
@@ -120,60 +122,67 @@
                             </p>
                         </div>
                     </div>
-                    </tr>
-                    <tr>
+                </div>
+                </tr>
+                <tr>
+                <h2>Opcje dodatkowe</h2>
+                <p>
+                    <input type="checkbox" name=""/> - Przedłużona Gwarancja - 3 lata <span class="accesories-price">250,-</span>
+                    <span class="value"> zł</span>
+                </p>
+                <p>
+                    <input type="checkbox" name=""/> - Projekt min. 150 m2 kostki dekoracyjnej <span class="accesories-price">00,-</span>
+                    <span class="value"> zł</span>
+                </p>
+                </br>
+                </tr>
+                <tr>
+                <div class="row">
                     <h2>Opcje produktu</h2>
-                    <table class="table-hover">
-                        <thead>
-                            <tr>
-                                <th>Kolor</th>
-                                <th>Wysokość</th>
-                                <th>Wymiar</th>
-                                <th>Powierzchnia</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="volvo">Czerwony</option>
-                                        <option value="saab">Brąz</option>
-                                        <option value="mercedes">Szary</option>
-                                        <option value="audi">Grafitowy</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="volvo">4 cm</option>
-                                        <option value="saab">6 cm</option>
-                                        <option value="mercedes">8 cm</option>
-                                        <option value="audi">10 cm</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="volvo">10x10</option>
-                                        <option value="saab">10x20</option>
-                                        <option value="mercedes">20x20</option>
-                                        <option value="audi">20x30</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control">
-                                        <option value="volvo">Gładka</option>
-                                        <option value="saab">Płukana</option>
-                                    </select>
-                                </td>
-                        </tbody>
-                    </table>
-                    </tr>
-                    <tr>
-                    <h2>Opcje dodatkowe</h2>
-                    <p><input type="checkbox" name=""/> - Przedłużona Gwarancja - 3 lata <span class="price">250,-</span><span class="value"> zł</span></p>
-                    <p><input type="checkbox" name=""/> - Projekt min. 150 m2 kostki dekoracyjnej <span class="price">00,-</span><span class="value"> zł</span></p>
-                    </br>
-                    </tr>
-                    </tbody>
+
+                    {% for variant in product.variants %}
+                        {% if loop.index == 1 %}
+                            <table class="table-hover table-striped variant-table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Kolor</th>
+                                        <th>Wysokość</th>
+                                        <th>Wymiar</th>
+                                        <th>Typ</th>
+                                        <th>Cena</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% endif %}
+                                <tr class="variant" data-packing="{{ variant.packing }}" data-price="{{ variant.price }}">
+                                    <td>
+                                        <input type="checkbox" name="variant{{ variant.id }}" data-variant="{{ variant.id }}" data-price="{{ variant.price }}"/>
+                                    </td>
+                                    <td>
+                                        {{ variant.color }}
+                                    </td>
+                                    <td>
+                                        {{ variant.height }}
+                                    </td>
+                                    <td>
+                                        {{ variant.dimensions }}
+                                    </td>
+                                    <td>
+                                        {{ variant.surfance }}
+                                    </td>
+                                    <td>
+                                        {{ variant.price }}
+                                    </td>
+                                </tr>
+                                {% if loop.index == 0 %}
+                                </tbody>
+                            </table>   
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                </tr>
+                </tbody>
             </table>
 
             <h3>  
@@ -195,7 +204,7 @@
                 <div class="col-md-12 total_vat">
                     <div class="row">
                         <div class="value col-md-6"></div>
-                        <p class="col-md-2">Stawka VAT - </p>
+                        <p class="col-md-2">VAT </p>
                         <div class="vat_type col-md-1" data-vat="23">23%</div>
                         <div id="vatvalue" class="col-md-2">--</div>
                         <div class="value col-md-1">zł</div>
@@ -253,8 +262,10 @@
         </div>
         <a href="{{ path('basket_add', {'id': product.id}) }}" class="btn btn-primary" role="button">
             <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj do koszyka</a>
-        <a href="{{ path('product_new') }}" class="btn btn-warning" role="button">
-            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj nowy produkt</a>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('product_new') }}" class="btn btn-warning" role="button">
+                <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Dodaj nowy produkt</a>
+            {% endif %}
     </div>
 
 </div>

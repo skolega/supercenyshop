@@ -147,18 +147,6 @@ class Product {
      * @Assert\Range(min=0, minMessage="Podana ilość sztuk musi być większa lub równa {{ limit }}.")
      */
     private $package;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="type", type="integer")
-     * 
-     * @Assert\NotBlank()
-     * @Assert\Range(min=0)
-     */
-    private $type = 0;
-    
-    
 
     /**
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
@@ -166,6 +154,20 @@ class Product {
      * @Assert\NotNull(message="Proszę wybrać odpowiednią kategorię")
      */
     private $category;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="ProductType", inversedBy="product")
+     * 
+     * @Assert\NotNull(message="Proszę wybrać odpowiedni typ produktu")
+     */
+    private $type;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="ProductVariant", mappedBy="product")
+     * 
+     * @Assert\NotNull(message="Zaznacz odpowiedni wariant")
+     */
+    private $variants;
     
     /**
      * @ORM\OneToMany(targetEntity="Manufacturer", mappedBy="product")
@@ -210,6 +212,16 @@ class Product {
      * @var \DateTime $updatedAt
      */
     private $updatedAt;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Product", inversedBy="crossSelling")
+     */
+    private $crossProduct;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Product", mappedBy="crossProduct")
+     */
+    private $crossSelling;
 
     public function __toString() {
         return $this->name;
@@ -701,5 +713,84 @@ class Product {
     public function getFacture()
     {
         return $this->facture;
+    }
+
+    /**
+     * Add variants
+     *
+     * @param \AppBundle\Entity\ProductVariant $variants
+     * @return Product
+     */
+    public function addVariant(\AppBundle\Entity\ProductVariant $variants)
+    {
+        $this->variants[] = $variants;
+
+        return $this;
+    }
+
+    /**
+     * Remove variants
+     *
+     * @param \AppBundle\Entity\ProductVariant $variants
+     */
+    public function removeVariant(\AppBundle\Entity\ProductVariant $variants)
+    {
+        $this->variants->removeElement($variants);
+    }
+
+    /**
+     * Get variants
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVariants()
+    {
+        return $this->variants;
+    }
+
+    /**
+     * Set crossProduct
+     *
+     * @param \AppBundle\Entity\Product $crossProduct
+     * @return Product
+     */
+    public function setCrossProduct(\AppBundle\Entity\Product $crossProduct = null)
+    {
+        $this->crossProduct = $crossProduct;
+
+        return $this;
+    }
+
+    /**
+     * Get crossProduct
+     *
+     * @return \AppBundle\Entity\Product 
+     */
+    public function getCrossProduct()
+    {
+        return $this->crossProduct;
+    }
+
+    /**
+     * Set crossSelling
+     *
+     * @param \AppBundle\Entity\Product $crossSelling
+     * @return Product
+     */
+    public function setCrossSelling(\AppBundle\Entity\Product $crossSelling = null)
+    {
+        $this->crossSelling = $crossSelling;
+
+        return $this;
+    }
+
+    /**
+     * Get crossSelling
+     *
+     * @return \AppBundle\Entity\Product 
+     */
+    public function getCrossSelling()
+    {
+        return $this->crossSelling;
     }
 }

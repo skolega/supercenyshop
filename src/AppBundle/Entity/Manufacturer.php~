@@ -32,6 +32,10 @@ class Manufacturer
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+    
+    public function __toString() {
+        return $this->name;
+    }
 
     /**
      * @var string
@@ -194,6 +198,7 @@ class Manufacturer
 
         return $this;
     }
+    
 
     /**
      * Get street

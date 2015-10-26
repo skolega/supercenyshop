@@ -37,28 +37,58 @@ $().ready(function () {
     });
     var $quantity = $('.quantity-step').val();
     var $price = $('.price').data('price') * 1;
-    var $netto_value = $price * $quantity ;
+    var $netto_value = ($price * $quantity).toFixed(2);
     var $vat = $('div.vat_type').data('vat') * 1;
     $('.total_sum > .price_value > span').html($netto_value);
-    
-    $('#vatvalue').html(($netto_value * (1 + ($vat / 100)))-$netto_value);
+
+    var $vatvalue = (($netto_value * (1 + ($vat / 100))) - $netto_value).toFixed(2);
+    $('#vatvalue').html($vatvalue);
 });
 
-$('.expected_quantity').bind('click keyup', function () {
+function getCalculationData() {
     var $expectedQuantity = $('.expected_quantity').val();
     var $quantity = $('.quantity-step').attr("step");
-    var $result = 0;
+    var $result = $quantity;
 
     if ($expectedQuantity % $quantity === 0) {
-        $result = (($expectedQuantity / $quantity)) * $quantity
+        $result = (($expectedQuantity / $quantity)) * $quantity;
     } else {
         $result = Math.ceil(($expectedQuantity / $quantity)) * $quantity;
     }
     $('.quantity-step').val($result);
+}
+
+
+function calculatePrice() {
     var $price = $('.price').data('price') * 1;
-    var $netto_value = $price * $('.quantity-step').val();
+    var $netto_value = ($price * $('.quantity-step').val()).toFixed(2);
     var $vat = $('div.vat_type').data('vat') * 1;
     $('.total_sum > .price_value > span').html($netto_value);
-    
-    $('#vatvalue').html(($netto_value * (1 + ($vat / 100)))-$netto_value);
+    var $vatvalue = (($netto_value * (1 + ($vat / 100))) - $netto_value).toFixed(2);
+    $('#vatvalue').html($vatvalue);
+}
+
+
+
+$('.variant').on('click', function () {
+    $price = $(this).data('price');
+    $packing = $(this).data('packing');
+    $('.price').html($price);
+    $('.price').data('price', $price);
+    $('.variant').find('td > input').prop('checked', false);
+    $(this).find('td > input').prop('checked', true);
+    $('.quantity-input').attr('min', $packing).attr('step', $packing).attr('value', $packing);
+    getCalculationData();
+    calculatePrice();
+});
+
+
+
+$('.expected_quantity').bind('click keyup', function () {
+    getCalculationData();
+    calculatePrice();
+});
+
+$('.quantity-input').find('.quantity-step').bind('click keyup', function () {
+    calculatePrice();
 });

@@ -9,3 +9,11 @@
 #vatvalue{
     float:rigt;
 }
+
+.variant-table th{
+    width:20% !important;
+}
+
+.variant-table th:first-child{
+    width:inherit !important;
+}
