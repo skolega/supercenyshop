@@ -214,14 +214,15 @@ class Product {
     private $updatedAt;
     
     /**
-     * @ORM\OneToOne(targetEntity="Product", inversedBy="crossSelling")
+     * @ORM\ManyToMany(targetEntity="ProductAditionalOptions", inversedBy="products")
      */
-    private $crossProduct;
+    private $aditional_options;
     
     /**
-     * @ORM\OneToOne(targetEntity="Product", mappedBy="crossProduct")
+     * @ORM\Column(name="cross_sell_product", type="string", length=255, nullable=true)
      */
-    private $crossSelling;
+    private $crossProduct;
+   
 
     public function __toString() {
         return $this->name;
@@ -792,5 +793,38 @@ class Product {
     public function getCrossSelling()
     {
         return $this->crossSelling;
+    }
+
+    /**
+     * Add aditional_options
+     *
+     * @param \AppBundle\Entity\ProductAditionalOptions $aditionalOptions
+     * @return Product
+     */
+    public function addAditionalOption(\AppBundle\Entity\ProductAditionalOptions $aditionalOptions)
+    {
+        $this->aditional_options[] = $aditionalOptions;
+
+        return $this;
+    }
+
+    /**
+     * Remove aditional_options
+     *
+     * @param \AppBundle\Entity\ProductAditionalOptions $aditionalOptions
+     */
+    public function removeAditionalOption(\AppBundle\Entity\ProductAditionalOptions $aditionalOptions)
+    {
+        $this->aditional_options->removeElement($aditionalOptions);
+    }
+
+    /**
+     * Get aditional_options
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAditionalOptions()
+    {
+        return $this->aditional_options;
     }
 }

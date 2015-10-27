@@ -77,7 +77,7 @@ $('.variant').on('click', function () {
     $('.price').data('price', $price);
     $('.variant').find('td > input').prop('checked', false);
     $(this).find('td > input').prop('checked', true);
-    $('.quantity-input').attr('min', $packing).attr('step', $packing).attr('value', $packing);
+    $('.quantity-input input').prop('min', $packing).prop('step', $packing).prop('value', $packing);
     getCalculationData();
     calculatePrice();
 });
